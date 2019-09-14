@@ -15,7 +15,7 @@ var COLUMN_INDENT_LEFT = 40;
 var TEXT_INDENT_LEFT = 20;
 var TEXT_INDENT_BOTTOM = 10;
 var TEXT_INDENT_TOP = 20;
-var TITLE_INDENT_TOP_2 = 40;
+var TITLE_INDENT_TOP_2 = 30;
 
 var renderCloud = function (ctx) {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
@@ -41,25 +41,35 @@ var getMaxResult = function (times) {
   return maxResult;
 };
 
+var printTimes = function (ctx, times, i) {
+  ctx.fillStyle = '#000000';
+  ctx.textAlign = 'center';
+  ctx.fillText(Math.floor(times[i]), COLUMN_X + (COLUMN_WIDTH * i) + (COLUMN_INDENT_LEFT * i) + TEXT_INDENT_LEFT, COLUMN_Y - TEXT_INDENT_BOTTOM);
+};
+
+var printStatistics = function (ctx, columnMaxHeight, times, names, i) {
+  var columnHeight = Math.floor((COLUMN_MAX_HEIGHT * Math.floor(times[i])) / columnMaxHeight);
+  if (names[i] !== 'Вы') {
+    ctx.fillStyle = 'hsl(210, ' + Math.floor(Math.random() * 101) + '%, 50%)';
+  } else {
+    ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+  }
+  ctx.fillRect(COLUMN_X + (COLUMN_WIDTH * i) + (COLUMN_INDENT_LEFT * i), COLUMN_Y + (COLUMN_MAX_HEIGHT - columnHeight), COLUMN_WIDTH, columnHeight);
+};
+
+var printNames = function (ctx, names, i) {
+  ctx.fillStyle = '#000000';
+  ctx.textAlign = 'center';
+  ctx.fillText(names[i], COLUMN_X + (COLUMN_WIDTH * i) + (COLUMN_INDENT_LEFT * i) + TEXT_INDENT_LEFT, COLUMN_Y + COLUMN_MAX_HEIGHT + TEXT_INDENT_TOP);
+};
+
 window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx);
   var columnMaxHeight = getMaxResult(times);
 
   for (var i = 0; i < times.length; i++) {
-    ctx.fillStyle = '#000000';
-    ctx.textAlign = 'center';
-    ctx.fillText(Math.floor(times[i]), COLUMN_X + (COLUMN_WIDTH * i) + (COLUMN_INDENT_LEFT * i) + TEXT_INDENT_LEFT, COLUMN_Y - TEXT_INDENT_BOTTOM);
-
-    var columnHeight = Math.floor((COLUMN_MAX_HEIGHT * Math.floor(times[i])) / columnMaxHeight);
-    if (names[i] !== 'Вы') {
-      ctx.fillStyle = 'hsl(210, ' + Math.floor(Math.random() * 101) + '%, 50%)';
-    } else {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    }
-    ctx.fillRect(COLUMN_X + (COLUMN_WIDTH * i) + (COLUMN_INDENT_LEFT * i), COLUMN_Y + (COLUMN_MAX_HEIGHT - columnHeight), COLUMN_WIDTH, columnHeight);
-
-    ctx.fillStyle = '#000000';
-    ctx.textAlign = 'center';
-    ctx.fillText(names[i], COLUMN_X + (COLUMN_WIDTH * i) + (COLUMN_INDENT_LEFT * i) + TEXT_INDENT_LEFT, COLUMN_Y + COLUMN_MAX_HEIGHT + TEXT_INDENT_TOP);
+    printTimes(ctx, times, i);
+    printStatistics(ctx, columnMaxHeight, times, names, i);
+    printNames(ctx, names, i);
   }
 };
