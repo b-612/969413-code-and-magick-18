@@ -41,10 +41,10 @@ var getMaxResult = function (times) {
   return maxResult;
 };
 
-var printTimes = function (ctx, times, i) {
+var printTimes = function (ctx, times, i, columnHeight) {
   ctx.fillStyle = '#000000';
   ctx.textAlign = 'center';
-  ctx.fillText(Math.floor(times[i]), COLUMN_X + (COLUMN_WIDTH * i) + (COLUMN_INDENT_LEFT * i) + TEXT_INDENT_LEFT, COLUMN_Y - TEXT_INDENT_BOTTOM);
+  ctx.fillText(Math.floor(times[i]), COLUMN_X + (COLUMN_WIDTH * i) + (COLUMN_INDENT_LEFT * i) + TEXT_INDENT_LEFT, COLUMN_Y + (COLUMN_MAX_HEIGHT - columnHeight) - TEXT_INDENT_BOTTOM);
 };
 
 var printStatistics = function (ctx, columnMaxHeight, times, names, i) {
@@ -55,6 +55,7 @@ var printStatistics = function (ctx, columnMaxHeight, times, names, i) {
     ctx.fillStyle = 'rgba(255, 0, 0, 1)';
   }
   ctx.fillRect(COLUMN_X + (COLUMN_WIDTH * i) + (COLUMN_INDENT_LEFT * i), COLUMN_Y + (COLUMN_MAX_HEIGHT - columnHeight), COLUMN_WIDTH, columnHeight);
+  return columnHeight;
 };
 
 var printNames = function (ctx, names, i) {
@@ -68,7 +69,7 @@ window.renderStatistics = function (ctx, names, times) {
   var columnMaxHeight = getMaxResult(times);
 
   for (var i = 0; i < times.length; i++) {
-    printTimes(ctx, times, i);
+    printTimes(ctx, times, i, printStatistics(ctx, columnMaxHeight, times, names, i));
     printStatistics(ctx, columnMaxHeight, times, names, i);
     printNames(ctx, names, i);
   }
