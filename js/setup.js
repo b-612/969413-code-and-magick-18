@@ -1,8 +1,8 @@
 'use strict';
 
 var HOW_MANY_CHARACTERS = 4;
-var charactersParams = {
-  wizardNames: [
+var СharactersParams = {
+  WIZARD_NAMES: [
     'Иван',
     'Хуан Себастьян',
     'Мария',
@@ -13,8 +13,7 @@ var charactersParams = {
     'Вашингтон'
   ],
 
-  wizardLastNames: [
-    'Фамилии',
+  WIZARD_LAST_NAMES: [
     'да Марья',
     'Верон',
     'Мирабелла',
@@ -25,7 +24,7 @@ var charactersParams = {
     'Ирвинг'
   ],
 
-  coatColors: [
+  COAT_COLORS: [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
     'rgb(146, 100, 161)',
@@ -34,7 +33,7 @@ var charactersParams = {
     'rgb(0, 0, 0)'
   ],
 
-  eyesColors: [
+  EYES_COLORS: [
     'black',
     'red',
     'blue',
@@ -54,11 +53,11 @@ var showSettingsWindow = function () {
 
 var makeCharacter = function (characterParams) {
   var character = {
-    name: characterParams.wizardNames[getRandomNumber(characterParams.wizardNames.length - 1)] + ' ' + characterParams.wizardLastNames[getRandomNumber(characterParams.wizardLastNames.length - 1)],
+    name: characterParams.WIZARD_NAMES[getRandomNumber(characterParams.WIZARD_NAMES.length - 1)] + ' ' + characterParams.WIZARD_LAST_NAMES[getRandomNumber(characterParams.WIZARD_LAST_NAMES.length - 1)],
 
-    coatColor: characterParams.coatColors[getRandomNumber(characterParams.coatColors.length - 1)],
+    coatColor: characterParams.COAT_COLORS[getRandomNumber(characterParams.COAT_COLORS.length - 1)],
 
-    eyesColor: characterParams.eyesColors[getRandomNumber(characterParams.eyesColors.length - 1)]
+    eyesColor: characterParams.EYES_COLORS[getRandomNumber(characterParams.EYES_COLORS.length - 1)]
   };
 
   return character;
@@ -68,7 +67,7 @@ var makeCharacters = function () {
   var characters = [];
 
   for (var i = 0; i < HOW_MANY_CHARACTERS; i++) {
-    characters.push(makeCharacter(charactersParams));
+    characters.push(makeCharacter(СharactersParams));
   }
 
   return characters;
@@ -106,4 +105,6 @@ var showPlayerSettings = function (characterParams, howManyCharacters) {
   addSimilarCharacters(makeCharacters(characterParams, howManyCharacters));
 };
 
-showPlayerSettings(charactersParams, HOW_MANY_CHARACTERS);
+showPlayerSettings(СharactersParams, HOW_MANY_CHARACTERS);
+
+console.dir(document.querySelector('.setup-similar-list'), 1);
