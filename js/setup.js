@@ -102,12 +102,12 @@ var renderFragment = function () {
 };
 
 var addSimilarCharacters = function () {
+  showSettingsWindow();
   renderFragment();
   similarCharacters.classList.remove('hidden');
 };
 
 var showPlayerSettings = function () {
-  showSettingsWindow();
   addSimilarCharacters();
 };
 
