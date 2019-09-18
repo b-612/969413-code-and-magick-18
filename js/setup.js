@@ -42,12 +42,17 @@ var СharactersParams = {
   ]
 };
 
+var playerSettings = document.querySelector('.setup');
+var similarCharacters = document.querySelector('.setup-similar');
+var similarList = document.querySelector('.setup-similar-list');
+var similarCharacterTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+var fragment = document.createDocumentFragment();
+
 var getRandomNumber = function (maxNumber) {
   return Math.floor(Math.random() * (maxNumber + 1));
 };
 
 var showSettingsWindow = function () {
-  var playerSettings = document.querySelector('.setup');
   playerSettings.classList.remove('hidden');
 };
 
@@ -73,38 +78,37 @@ var makeCharacters = function () {
   return characters;
 };
 
-var addSimilarCharacters = function (characters) {
-  var similarCharacters = document.querySelector('.setup-similar');
-  var similarList = document.querySelector('.setup-similar-list');
-  var similarCharacterTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+var renderCharacters = function (characters) {
+  var characterElement = similarCharacterTemplate.cloneNode(true);
+  var characterNameElement = characterElement.querySelector('.setup-similar-label');
+  var characterCoatElement = characterElement.querySelector('.wizard-coat');
+  var characterEyesElement = characterElement.querySelector('.wizard-eyes');
 
-  var renderCharacter = function () {
-    var characterElement = similarCharacterTemplate.cloneNode(true);
-    var characterNameElement = characterElement.querySelector('.setup-similar-label');
-    var characterCoatElement = characterElement.querySelector('.wizard-coat');
-    var characterEyesElement = characterElement.querySelector('.wizard-eyes');
-
+  for (var i = 0; i < HOW_MANY_CHARACTERS; i++) {
     characterNameElement.textContent = characters[i].name;
     characterCoatElement.style.fill = characters[i].coatColor;
     characterEyesElement.style.fill = characters[i].eyesColor;
+  }
 
-    return characterElement;
-  };
+  return characterElement;
+};
 
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < characters.length; i++) {
-    fragment.appendChild(renderCharacter());
+var renderFragment = function () {
+  for (var i = 0; i < HOW_MANY_CHARACTERS; i++) {
+    fragment.appendChild(renderCharacters(makeCharacters(СharactersParams)));
   }
 
   similarList.appendChild(fragment);
+};
+
+var addSimilarCharacters = function () {
+  renderFragment();
   similarCharacters.classList.remove('hidden');
 };
 
-var showPlayerSettings = function (characterParams, howManyCharacters) {
+var showPlayerSettings = function () {
   showSettingsWindow();
-  addSimilarCharacters(makeCharacters(characterParams, howManyCharacters));
+  addSimilarCharacters();
 };
 
-showPlayerSettings(СharactersParams, HOW_MANY_CHARACTERS);
-
-console.dir(document.querySelector('.setup-similar-list'), 1);
+showPlayerSettings();
