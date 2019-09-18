@@ -52,23 +52,23 @@ var showSettingsWindow = function () {
   playerSettings.classList.remove('hidden');
 };
 
-var makeCharacters = function (characterParams, howMany) {
-  var makeCharacter = function () {
-    var character = {
-      name: characterParams.wizardNames[getRandomNumber(characterParams.wizardNames.length - 1)] + ' ' + characterParams.wizardLastNames[getRandomNumber(characterParams.wizardLastNames.length - 1)],
+var makeCharacter = function (characterParams) {
+  var character = {
+    name: characterParams.wizardNames[getRandomNumber(characterParams.wizardNames.length - 1)] + ' ' + characterParams.wizardLastNames[getRandomNumber(characterParams.wizardLastNames.length - 1)],
 
-      coatColor: characterParams.coatColors[getRandomNumber(characterParams.coatColors.length - 1)],
+    coatColor: characterParams.coatColors[getRandomNumber(characterParams.coatColors.length - 1)],
 
-      eyesColor: characterParams.eyesColors[getRandomNumber(characterParams.eyesColors.length - 1)]
-    };
-
-    return character;
+    eyesColor: characterParams.eyesColors[getRandomNumber(characterParams.eyesColors.length - 1)]
   };
 
+  return character;
+};
+
+var makeCharacters = function () {
   var characters = [];
 
-  for (var i = 0; i < howMany; i++) {
-    characters.push(makeCharacter());
+  for (var i = 0; i < HOW_MANY_CHARACTERS; i++) {
+    characters.push(makeCharacter(charactersParams));
   }
 
   return characters;
