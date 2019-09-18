@@ -74,7 +74,7 @@ var makeCharacters = function (characterParams, howMany) {
   return characters;
 };
 
-var showSimilarCharacters = function (characters) {
+var addSimilarCharacters = function (characters) {
   var similarCharacters = document.querySelector('.setup-similar');
   var similarList = document.querySelector('.setup-similar-list');
   var similarCharacterTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
@@ -103,7 +103,7 @@ var showSimilarCharacters = function (characters) {
 
 var showPlayerSettings = function (characterParams, howManyCharacters) {
   showSettingsWindow();
-  showSimilarCharacters(makeCharacters(characterParams, howManyCharacters));
+  addSimilarCharacters(makeCharacters(characterParams, howManyCharacters));
 };
 
 showPlayerSettings(charactersParams, HOW_MANY_CHARACTERS);
