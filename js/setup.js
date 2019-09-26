@@ -119,7 +119,6 @@ showPlayerSettings();
 /* module4-task1 */
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
-// var SPACE_KEYCODE = 32;
 
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = playerSettings.querySelector('.setup-close');
