@@ -39,6 +39,14 @@ var СharactersParams = {
     'blue',
     'yellow',
     'green'
+  ],
+
+  FIREBALL_COLORS: [
+    '#ee4830',
+    '#30a8ee',
+    '#5ce6c0',
+    '#e848d5',
+    '#e6e848'
   ]
 };
 
@@ -116,6 +124,9 @@ var ENTER_KEYCODE = 13;
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = playerSettings.querySelector('.setup-close');
 var settingsUserName = playerSettings.querySelector('.setup-user-name');
+var myCharacterCoat = playerSettings.querySelector('.wizard-coat');
+var myCharacterEyes = playerSettings.querySelector('.wizard-eyes');
+var myCharacterFireball = playerSettings.querySelector('.setup-fireball-wrap');
 
 var onSettinsWindowEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
@@ -126,6 +137,7 @@ var onSettinsWindowEscPress = function (evt) {
 var showSettingsWindow = function () {
   playerSettings.setAttribute('tabindex', '1');
   playerSettings.classList.remove('hidden');
+  playerSettings.focus();
   document.addEventListener('keydown', onSettinsWindowEscPress);
 };
 
@@ -154,3 +166,21 @@ settingsUserName.addEventListener('keydown', function (evt) {
     evt.stopPropagation();
   }
 });
+
+var onElementSetColor = function (element, array) {
+  return function () {
+    element.setAttribute('style', 'fill:' + array[getRandomNumber(array.length - 1)]);
+  };
+};
+
+var onFireballSetColor = function () {
+  var fireballColor = СharactersParams.FIREBALL_COLORS[getRandomNumber(СharactersParams.FIREBALL_COLORS.length - 1)];
+  var fireballHiddenInput = myCharacterFireball.querySelector('input[name = fireball-color]');
+
+  myCharacterFireball.setAttribute('style', 'background-color:' + fireballColor);
+  fireballHiddenInput.setAttribute('value', fireballColor);
+};
+
+myCharacterCoat.addEventListener('click', onElementSetColor(myCharacterCoat, СharactersParams.COAT_COLORS));
+myCharacterEyes.addEventListener('click', onElementSetColor(myCharacterEyes, СharactersParams.EYES_COLORS));
+myCharacterFireball.addEventListener('click', onFireballSetColor);
