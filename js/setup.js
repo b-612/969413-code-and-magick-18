@@ -52,10 +52,6 @@ var getRandomNumber = function (maxNumber) {
   return Math.floor(Math.random() * (maxNumber + 1));
 };
 
-var showSettingsWindow = function () {
-  playerSettings.classList.remove('hidden');
-};
-
 var makeCharacter = function (characterParams) {
   var character = {
     name: characterParams.WIZARD_NAMES[getRandomNumber(characterParams.WIZARD_NAMES.length - 1)] + ' ' + characterParams.WIZARD_LAST_NAMES[getRandomNumber(characterParams.WIZARD_LAST_NAMES.length - 1)],
@@ -102,7 +98,6 @@ var renderFragment = function () {
 };
 
 var addSimilarCharacters = function () {
-  showSettingsWindow();
   renderFragment();
   similarCharacters.classList.remove('hidden');
 };
@@ -112,3 +107,50 @@ var showPlayerSettings = function () {
 };
 
 showPlayerSettings();
+
+/* module4-task1 */
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+// var SPACE_KEYCODE = 32;
+
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = playerSettings.querySelector('.setup-close');
+var settingsUserName = playerSettings.querySelector('.setup-user-name');
+
+var onSettinsWindowEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    hideSettingsWindow();
+  }
+};
+
+var showSettingsWindow = function () {
+  playerSettings.setAttribute('tabindex', '1');
+  playerSettings.classList.remove('hidden');
+  document.addEventListener('keydown', onSettinsWindowEscPress);
+};
+
+var hideSettingsWindow = function () {
+  playerSettings.classList.add('hidden');
+  playerSettings.removeAttribute('tabindex');
+  document.removeEventListener('keydown', onSettinsWindowEscPress);
+};
+
+setupOpen.addEventListener('click', showSettingsWindow);
+setupOpen.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    showSettingsWindow();
+  }
+});
+
+setupClose.addEventListener('click', hideSettingsWindow);
+setupClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    hideSettingsWindow();
+  }
+});
+
+settingsUserName.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    evt.stopPropagation();
+  }
+});
