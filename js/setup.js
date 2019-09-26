@@ -125,7 +125,9 @@ var setupOpen = document.querySelector('.setup-open');
 var setupClose = playerSettings.querySelector('.setup-close');
 var settingsUserName = playerSettings.querySelector('.setup-user-name');
 var myCharacterCoat = playerSettings.querySelector('.wizard-coat');
+var coatInput = playerSettings.querySelector('input[name = coat-color]');
 var myCharacterEyes = playerSettings.querySelector('.wizard-eyes');
+var eyesInput = playerSettings.querySelector('input[name = eyes-color]');
 var myCharacterFireball = playerSettings.querySelector('.setup-fireball-wrap');
 
 var onSettinsWindowEscPress = function (evt) {
@@ -167,9 +169,12 @@ settingsUserName.addEventListener('keydown', function (evt) {
   }
 });
 
-var onElementSetColor = function (element, array) {
+var onElementSetColor = function (element, array, input) {
   return function () {
-    element.setAttribute('style', 'fill:' + array[getRandomNumber(array.length - 1)]);
+    var currentColor = array[getRandomNumber(array.length - 1)];
+
+    element.setAttribute('style', 'fill:' + currentColor);
+    input.setAttribute('value', currentColor);
   };
 };
 
@@ -181,6 +186,6 @@ var onFireballSetColor = function () {
   fireballHiddenInput.setAttribute('value', fireballColor);
 };
 
-myCharacterCoat.addEventListener('click', onElementSetColor(myCharacterCoat, СharactersParams.COAT_COLORS));
-myCharacterEyes.addEventListener('click', onElementSetColor(myCharacterEyes, СharactersParams.EYES_COLORS));
+myCharacterCoat.addEventListener('click', onElementSetColor(myCharacterCoat, СharactersParams.COAT_COLORS, coatInput));
+myCharacterEyes.addEventListener('click', onElementSetColor(myCharacterEyes, СharactersParams.EYES_COLORS, eyesInput));
 myCharacterFireball.addEventListener('click', onFireballSetColor);
