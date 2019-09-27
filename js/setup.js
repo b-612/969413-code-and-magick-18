@@ -148,19 +148,27 @@ var hideSettingsWindow = function () {
   document.removeEventListener('keydown', onSettinsWindowEscPress);
 };
 
-setupOpen.addEventListener('click', showSettingsWindow);
-setupOpen.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    showSettingsWindow();
-  }
-});
+var addSetupOpenCallbacks = function () {
+  setupOpen.addEventListener('click', showSettingsWindow);
+  setupOpen.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      showSettingsWindow();
+    }
+  });
+};
 
-setupClose.addEventListener('click', hideSettingsWindow);
-setupClose.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    hideSettingsWindow();
-  }
-});
+addSetupOpenCallbacks();
+
+var addSetupCloseCallbacks = function () {
+  setupClose.addEventListener('click', hideSettingsWindow);
+  setupClose.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      hideSettingsWindow();
+    }
+  });
+};
+
+addSetupCloseCallbacks();
 
 settingsUserName.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
@@ -168,7 +176,7 @@ settingsUserName.addEventListener('keydown', function (evt) {
   }
 });
 
-var onElementSetColor = function (element, array, input) {
+var onElementColorClick = function (element, array, input) {
   return function () {
     var currentColor = array[getRandomNumber(array.length - 1)];
 
@@ -185,6 +193,10 @@ var onFireballSetColor = function () {
   fireballHiddenInput.setAttribute('value', fireballColor);
 };
 
-myCharacterCoat.addEventListener('click', onElementSetColor(myCharacterCoat, СharactersParams.COAT_COLORS, coatInput));
-myCharacterEyes.addEventListener('click', onElementSetColor(myCharacterEyes, СharactersParams.EYES_COLORS, eyesInput));
-myCharacterFireball.addEventListener('click', onFireballSetColor);
+var addCharacterCallback = function () {
+  myCharacterCoat.addEventListener('click', onElementColorClick(myCharacterCoat, СharactersParams.COAT_COLORS, coatInput));
+  myCharacterEyes.addEventListener('click', onElementColorClick(myCharacterEyes, СharactersParams.EYES_COLORS, eyesInput));
+  myCharacterFireball.addEventListener('click', onFireballSetColor);
+};
+
+addCharacterCallback();
