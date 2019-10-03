@@ -1,17 +1,21 @@
 'use strict';
-
 (function () {
-  var dialogHandler = window.playerSettings.querySelector('.upload');
+  var dialogHandler = window.playerSettings.dialog.querySelector('.upload');
 
-  var onClickPreventDefault = function (evt) {
+  dialogHandler.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-    dialogHandler.removeEventListener('click', onClickPreventDefault);
-  };
 
-  var onMouseMove = function (isDragged, startCoords) {
-    return function (moveEvt) {
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+
+    var dragged = false;
+
+    var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      isDragged = true;
+      dragged = true;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -23,36 +27,29 @@
         y: moveEvt.clientY
       };
 
-      window.playerSettings.setAttribute('style', 'top: ' +
-        (window.playerSettings.offsetTop - shift.y) +
-        'px; left: ' + (window.playerSettings.offsetLeft - shift.x) + 'px');
-    };
-  };
+      window.playerSettings.dialog.setAttribute('style', 'top: '
+        + (window.playerSettings.dialog.offsetTop - shift.y) + 'px; ' +
+        'left: ' + (window.playerSettings.dialog.offsetLeft - shift.x) + 'px');
 
-  var onMouseUp = function (upEvt) {
-    upEvt.preventDefault();
-
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
-
-    // if (isDragged) {
-    //   onClickPreventDefault();
-    // }
-    // dialogHandler.addEventListener('click', onClickPreventDefault);
-  };
-
-  dialogHandler.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
     };
 
-    var dragged = false;
-    document.addEventListener('mousemove', onMouseMove(dragged, startCoords));
-    // debugger;
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      if (dragged) {
+        var onClickPreventDefault = function (clickEvt) {
+          clickEvt.preventDefault();
+          dialogHandler.removeEventListener('click', onClickPreventDefault);
+        };
+        dialogHandler.addEventListener('click', onClickPreventDefault);
+      }
+
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
-
 })();

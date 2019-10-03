@@ -1,16 +1,19 @@
 'use strict';
 
 (function () {
-  window.playerSettings = document.querySelector('.setup');
+  window.playerSettings = {
+    dialog: document.querySelector('.setup')
+  };
 
+  var startCoords = window.playerSettings.dialog.getAttribute('style');
   var setupOpen = document.querySelector('.setup-open');
-  var setupClose = window.playerSettings.querySelector('.setup-close');
-  var settingsUserName = window.playerSettings.querySelector('.setup-user-name');
-  var myCharacterCoat = window.playerSettings.querySelector('.wizard-coat');
-  var coatInput = window.playerSettings.querySelector('input[name = coat-color]');
-  var myCharacterEyes = window.playerSettings.querySelector('.wizard-eyes');
-  var eyesInput = window.playerSettings.querySelector('input[name = eyes-color]');
-  var myCharacterFireball = window.playerSettings.querySelector('.setup-fireball-wrap');
+  var setupClose = window.playerSettings.dialog.querySelector('.setup-close');
+  var settingsUserName = window.playerSettings.dialog.querySelector('.setup-user-name');
+  var myCharacterCoat = window.playerSettings.dialog.querySelector('.wizard-coat');
+  var coatInput = window.playerSettings.dialog.querySelector('input[name = coat-color]');
+  var myCharacterEyes = window.playerSettings.dialog.querySelector('.wizard-eyes');
+  var eyesInput = window.playerSettings.dialog.querySelector('input[name = eyes-color]');
+  var myCharacterFireball = window.playerSettings.dialog.querySelector('.setup-fireball-wrap');
 
   var onSettingsWindowEscPress = function (evt) {
     if (evt.keyCode === window.util.ESC_KEYCODE) {
@@ -19,15 +22,16 @@
   };
 
   var showSettingsWindow = function () {
-    window.playerSettings.setAttribute('tabindex', '1');
-    window.playerSettings.classList.remove('hidden');
-    window.playerSettings.focus();
+    window.playerSettings.dialog.setAttribute('tabindex', '1');
+    window.playerSettings.dialog.classList.remove('hidden');
+    window.playerSettings.dialog.focus();
     document.addEventListener('keydown', onSettingsWindowEscPress);
   };
 
   var hideSettingsWindow = function () {
-    window.playerSettings.classList.add('hidden');
-    window.playerSettings.removeAttribute('tabindex');
+    window.playerSettings.dialog.classList.add('hidden');
+    window.playerSettings.dialog.setAttribute('style', startCoords);
+    window.playerSettings.dialog.removeAttribute('tabindex');
     document.removeEventListener('keydown', onSettingsWindowEscPress);
   };
 
