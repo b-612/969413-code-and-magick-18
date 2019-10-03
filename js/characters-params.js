@@ -2,7 +2,7 @@
 
 (function () {
   var HOW_MANY_CHARACTERS = 4;
-  window.СharactersParams = {
+  var СharactersParams = {
     WIZARD_NAMES: [
       'Иван',
       'Хуан Себастьян',
@@ -72,7 +72,7 @@
     var characters = [];
 
     for (var i = 0; i < HOW_MANY_CHARACTERS; i++) {
-      characters.push(getCharacter(window.СharactersParams));
+      characters.push(getCharacter(СharactersParams));
     }
 
     return characters;
@@ -95,7 +95,7 @@
 
   var renderFragment = function () {
     for (var i = 0; i < HOW_MANY_CHARACTERS; i++) {
-      fragment.appendChild(renderCharacters(makeCharacter(window.СharactersParams)));
+      fragment.appendChild(renderCharacters(makeCharacter(СharactersParams)));
     }
 
     similarList.appendChild(fragment);
@@ -107,4 +107,6 @@
   };
 
   addSimilarCharacters();
+
+  window.charactersParams = СharactersParams;
 })();

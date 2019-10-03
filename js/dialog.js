@@ -1,10 +1,10 @@
 'use strict';
 (function () {
-  var dialogHandler = window.playerSettings.dialog.querySelector('.upload');
+  var dialog = window.setup.dialog.querySelector('.upload');
 
   var onClickPreventDefault = function (clickEvt) {
     clickEvt.preventDefault();
-    dialogHandler.removeEventListener('click', onClickPreventDefault);
+    dialog.removeEventListener('click', onClickPreventDefault);
   };
 
   var onMouseUp = function (moveResult) {
@@ -16,7 +16,7 @@
       document.removeEventListener('mouseup', onMouseUp);
 
       if (moveResult) {
-        dialogHandler.addEventListener('click', onClickPreventDefault);
+        dialog.addEventListener('click', onClickPreventDefault);
       }
 
     };
@@ -46,9 +46,9 @@
         y: moveEvt.clientY
       };
 
-      window.playerSettings.dialog.setAttribute('style', 'top: '
-        + (window.playerSettings.dialog.offsetTop - shift.y) + 'px; ' +
-        'left: ' + (window.playerSettings.dialog.offsetLeft - shift.x) + 'px');
+      window.setup.dialog.setAttribute('style', 'top: '
+        + (window.setup.dialog.offsetTop - shift.y) + 'px; ' +
+        'left: ' + (window.setup.dialog.offsetLeft - shift.x) + 'px');
 
       return dragged;
     };
@@ -57,5 +57,5 @@
     document.addEventListener('mouseup', onMouseUp(onMouseMove));
   };
 
-  dialogHandler.addEventListener('mousedown', onMouseDown);
+  dialog.addEventListener('mousedown', onMouseDown);
 })();
