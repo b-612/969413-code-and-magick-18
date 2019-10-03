@@ -7,17 +7,17 @@
     dialogHandler.removeEventListener('click', onClickPreventDefault);
   };
 
-  var onMouseMove = function (isDragged, coords) {
+  var onMouseMove = function (isDragged, startCoordinates) {
     return function (moveEvt) {
       moveEvt.preventDefault();
       isDragged = true;
 
       var shift = {
-        x: coords.x - moveEvt.clientX,
-        y: coords.y - moveEvt.clientY
+        x: startCoordinates.x - moveEvt.clientX,
+        y: startCoordinates.y - moveEvt.clientY
       };
 
-      coords = {
+      startCoordinates = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
@@ -30,7 +30,22 @@
     };
   };
 
-  dialogHandler.addEventListener('mousedown', function (evt) {
+  var onMouseUp = function (moveResult) {
+    return function (upEvt) {
+      // debugger;
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      if (moveResult) {
+        dialogHandler.addEventListener('click', onClickPreventDefault);
+      }
+
+    };
+  };
+
+  var onMouseDown = function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -40,21 +55,9 @@
 
     var dragged = false;
 
-    var onMouseUp = function (isDragged) {
-      return function (upEvt) {
-        // debugger;
-        upEvt.preventDefault();
-
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-
-        if (isDragged) {
-          dialogHandler.addEventListener('click', onClickPreventDefault);
-        }
-      };
-    };
-
     document.addEventListener('mousemove', onMouseMove(dragged, startCoords));
-    document.addEventListener('mouseup', onMouseUp(true));
-  });
+    document.addEventListener('mouseup', onMouseUp(onMouseMove));
+  };
+
+  dialogHandler.addEventListener('mousedown', onMouseDown);
 })();
