@@ -1,14 +1,16 @@
 'use strict';
+
 (function () {
-  var playerSettings = document.querySelector('.setup');
+  window.playerSettings = document.querySelector('.setup');
+
   var setupOpen = document.querySelector('.setup-open');
-  var setupClose = playerSettings.querySelector('.setup-close');
-  var settingsUserName = playerSettings.querySelector('.setup-user-name');
-  var myCharacterCoat = playerSettings.querySelector('.wizard-coat');
-  var coatInput = playerSettings.querySelector('input[name = coat-color]');
-  var myCharacterEyes = playerSettings.querySelector('.wizard-eyes');
-  var eyesInput = playerSettings.querySelector('input[name = eyes-color]');
-  var myCharacterFireball = playerSettings.querySelector('.setup-fireball-wrap');
+  var setupClose = window.playerSettings.querySelector('.setup-close');
+  var settingsUserName = window.playerSettings.querySelector('.setup-user-name');
+  var myCharacterCoat = window.playerSettings.querySelector('.wizard-coat');
+  var coatInput = window.playerSettings.querySelector('input[name = coat-color]');
+  var myCharacterEyes = window.playerSettings.querySelector('.wizard-eyes');
+  var eyesInput = window.playerSettings.querySelector('input[name = eyes-color]');
+  var myCharacterFireball = window.playerSettings.querySelector('.setup-fireball-wrap');
 
   var onSettingsWindowEscPress = function (evt) {
     if (evt.keyCode === window.util.ESC_KEYCODE) {
@@ -17,15 +19,15 @@
   };
 
   var showSettingsWindow = function () {
-    playerSettings.setAttribute('tabindex', '1');
-    playerSettings.classList.remove('hidden');
-    playerSettings.focus();
+    window.playerSettings.setAttribute('tabindex', '1');
+    window.playerSettings.classList.remove('hidden');
+    window.playerSettings.focus();
     document.addEventListener('keydown', onSettingsWindowEscPress);
   };
 
   var hideSettingsWindow = function () {
-    playerSettings.classList.add('hidden');
-    playerSettings.removeAttribute('tabindex');
+    window.playerSettings.classList.add('hidden');
+    window.playerSettings.removeAttribute('tabindex');
     document.removeEventListener('keydown', onSettingsWindowEscPress);
   };
 
