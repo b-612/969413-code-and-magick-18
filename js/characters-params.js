@@ -58,55 +58,54 @@
 
   var getCharacter = function (characterParams) {
     var character = {
-      name: characterParams.WIZARD_NAMES[window.util.getRandomNumber(characterParams.WIZARD_NAMES.length - 1)] + ' ' + characterParams.WIZARD_LAST_NAMES[window.util.getRandomNumber(characterParams.WIZARD_LAST_NAMES.length - 1)],
-
-      coatColor: characterParams.COAT_COLORS[window.util.getRandomNumber(characterParams.COAT_COLORS.length - 1)],
-
-      eyesColor: characterParams.EYES_COLORS[window.util.getRandomNumber(characterParams.EYES_COLORS.length - 1)]
+      name: characterParams.name,
+      coatColor: characterParams.colorCoat,
+      eyesColor: characterParams.colorEyes
     };
 
     return character;
   };
 
-  var makeCharacter = function () {
+  var makeCharacter = function (charactersParams) {
+    // debugger;
     var characters = [];
 
     for (var i = 0; i < HOW_MANY_CHARACTERS; i++) {
-      characters.push(getCharacter(СharactersParams));
+      characters.push(getCharacter(charactersParams[i]));
     }
 
     return characters;
   };
 
-  var renderCharacters = function (characters) {
+  var renderCharacter = function (character, i) {
     var characterElement = similarCharacterTemplate.cloneNode(true);
     var characterNameElement = characterElement.querySelector('.setup-similar-label');
     var characterCoatElement = characterElement.querySelector('.wizard-coat');
     var characterEyesElement = characterElement.querySelector('.wizard-eyes');
 
-    for (var i = 0; i < HOW_MANY_CHARACTERS; i++) {
-      characterNameElement.textContent = characters[i].name;
-      characterCoatElement.style.fill = characters[i].coatColor;
-      characterEyesElement.style.fill = characters[i].eyesColor;
-    }
+    characterNameElement.textContent = character[i].name;
+    characterCoatElement.style.fill = character[i].coatColor;
+    characterEyesElement.style.fill = character[i].eyesColor;
 
     return characterElement;
   };
 
-  var renderFragment = function () {
+  var renderFragment = function (allCharacters) {
     for (var i = 0; i < HOW_MANY_CHARACTERS; i++) {
-      fragment.appendChild(renderCharacters(makeCharacter(СharactersParams)));
+      var character = makeCharacter(allCharacters);
+      fragment.appendChild(renderCharacter(character, i));
     }
 
     similarList.appendChild(fragment);
   };
 
-  var addSimilarCharacters = function () {
-    renderFragment();
+  var addSimilarCharacters = function (characters) {
+    renderFragment(characters);
     similarCharacters.classList.remove('hidden');
   };
 
-  addSimilarCharacters();
-
-  window.charactersParams = СharactersParams;
+  window.charactersParams = {
+    mockParams: СharactersParams,
+    addSimilarCharacters: addSimilarCharacters
+  };
 })();
