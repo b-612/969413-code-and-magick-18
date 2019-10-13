@@ -70,7 +70,7 @@
   };
 
   var onFireballSetColor = function () {
-    var fireballColor = window.charactersParams.FIREBALL_COLORS[window.util.getRandomNumber(window.charactersParams.FIREBALL_COLORS.length - 1)];
+    var fireballColor = window.charactersParams.mockParams.FIREBALL_COLORS[window.util.getRandomNumber(window.charactersParams.mockParams.FIREBALL_COLORS.length - 1)];
     var fireballHiddenInput = myCharacterFireball.querySelector('input[name = fireball-color]');
 
     myCharacterFireball.setAttribute('style', 'background-color:' + fireballColor);
@@ -78,8 +78,8 @@
   };
 
   var addCharacterCallback = function () {
-    myCharacterCoat.addEventListener('click', onElementColorClick(myCharacterCoat, window.charactersParams.COAT_COLORS, coatInput));
-    myCharacterEyes.addEventListener('click', onElementColorClick(myCharacterEyes, window.charactersParams.EYES_COLORS, eyesInput));
+    myCharacterCoat.addEventListener('click', onElementColorClick(myCharacterCoat, window.charactersParams.mockParams.COAT_COLORS, coatInput));
+    myCharacterEyes.addEventListener('click', onElementColorClick(myCharacterEyes, window.charactersParams.mockParams.EYES_COLORS, eyesInput));
     myCharacterFireball.addEventListener('click', onFireballSetColor);
   };
 

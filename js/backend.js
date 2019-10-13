@@ -1,16 +1,71 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/code-and-magick/data';
+  var form = document.querySelector('.setup-wizard-form');
+
+  var URL_LOAD = 'https://js.dump.academy/code-and-magick/data';
+  var LOAD_METHOD = 'GET';
+  var LOAD_DATA = null;
+
+  var URL_UPLOAD = 'https://js.dump.academy/code-and-magick/';
+  var UPLOAD_METHOD = 'POST';
+  var REQUEST_TIMEOUT = 15000;
+
+  var STATUS_OK = 200;
+
+  var getXhr = function () {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+
+    return xhr;
+  };
+
+  var setXhrParams = function (xhr, url, method, timeout, data) {
+    xhr.timeout = timeout;
+    xhr.open(method, url);
+
+    switch (data) {
+      case null :
+        xhr.send();
+        break;
+      default :
+        xhr.send(data);
+        break;
+    }
+  };
 
   var onCharactersLoad = function (xhrParam) {
     window.charactersParams.addSimilarCharacters(window.util.shuffleArray(xhrParam.response));
   };
 
+  var getErrorMessage = function (xhr) {
+    var errorPrew = 'Ошибка: ';
+    var errorStatus = 'Статус ошибки: ' + xhr.status;
+    var errorMessage;
+
+    switch (xhr.status) {
+      case 400 :
+        errorMessage = 'Неверный запрос';
+        break;
+      case 401 :
+        errorMessage = 'Пользователь не авторизован';
+        break;
+      case 404 :
+        errorMessage = 'Ничего не найдено';
+        break;
+      default :
+        errorMessage = 'Что-то пошло не так';
+    }
+
+    return {
+      errorPrew: errorPrew,
+      message: errorPrew + errorMessage + '. ' + errorStatus
+    };
+  };
+
   var onCharactersError = function (message) {
     var errorBlock = document.createElement('div');
-    var setupForm = document.querySelector('.setup-wizard-form');
-    var setupFooter = setupForm.querySelector('.setup-footer');
+    var setupFooter = form.querySelector('.setup-footer');
 
     errorBlock.setAttribute('style', 'font-size: 24px; color: #ffffff; ' +
       'background-color: #bf1a1a; ' +
@@ -20,51 +75,48 @@
     setupFooter.insertAdjacentElement('afterbegin', errorBlock);
   };
 
-  var loadWizards = function (onLoad, onError) {
-    var xhr = new XMLHttpRequest();
-    var errorPrew = 'Похожие персонажи не загрузились. Ошибка: ';
-
-    xhr.responseType = 'json';
-
-    xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
-        onLoad(xhr);
-      } else {
-        var errorStatus = 'Статус ошибки: ' + xhr.status;
-        var errorMessage;
-
-        switch (xhr.status) {
-          case 400 :
-            errorMessage = 'Неверный запрос';
-            break;
-          case 401 :
-            errorMessage = 'Пользователь не авторизован';
-            break;
-          case 404 :
-            errorMessage = 'Ничего не найдено';
-            break;
-        }
-
-        var error = errorPrew + errorMessage + '. ' + errorStatus;
-
-        onError(error);
-      }
-    });
-
+  var getAdditionalErrors = function (xhr) {
     xhr.addEventListener('error', function () {
-      onCharactersError(errorPrew + 'Произошла ошибка соединения.');
+      onCharactersError(getErrorMessage(xhr).errorPrew + 'Произошла ошибка соединения.');
     });
 
     xhr.addEventListener('timeout', function () {
-      onCharactersError(errorPrew + 'Запрос не успел выполнится за ' + xhr.timeout + ' миллисекунд.');
+      onCharactersError(getErrorMessage(xhr).errorPrew + 'Запрос не успел выполниться за ' + xhr.timeout + ' миллисекунд.');
     });
+  };
 
-    xhr.timeout = 15000;
-    xhr.open('GET', URL);
-    xhr.send();
+  var setLoadCallback = function (xhr, onLoad, onError) {
+    xhr.addEventListener('load', function () {
+      if (xhr.status === STATUS_OK) {
+        onLoad(xhr);
+      } else {
+        onError(getErrorMessage(xhr).message);
+      }
+    });
+  };
+
+  var onButtonSubmit = function () {
+    window.setup.dialog.classList.add('hidden');
+  };
+
+  var setFormCallback = function () {
+    form.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+      loadUploadCharacters(URL_UPLOAD, onButtonSubmit, onCharactersError, UPLOAD_METHOD, REQUEST_TIMEOUT, new FormData(form));
+    });
+  };
+
+  var loadUploadCharacters = function (url, onLoad, onError, method, timeout, data) {
+    var xhr = getXhr();
+
+    setLoadCallback(xhr, onLoad, onError);
+
+    getAdditionalErrors(xhr);
+    setXhrParams(xhr, url, method, timeout, data);
   };
 
   window.backend = {
-    load: loadWizards(onCharactersLoad, onCharactersError)
+    load: loadUploadCharacters(URL_LOAD, onCharactersLoad, onCharactersError, LOAD_METHOD, REQUEST_TIMEOUT, LOAD_DATA),
+    upload: setFormCallback()
   };
 })();
