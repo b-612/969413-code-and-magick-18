@@ -8,8 +8,10 @@
   var settingsUserName = dialog.querySelector('.setup-user-name');
   var myCharacterCoat = dialog.querySelector('.wizard-coat');
   var coatInput = dialog.querySelector('input[name = coat-color]');
+  var startCoatColor = coatInput.value;
   var myCharacterEyes = dialog.querySelector('.wizard-eyes');
   var eyesInput = dialog.querySelector('input[name = eyes-color]');
+  var startEyesColor = eyesInput.value;
   var myCharacterFireball = dialog.querySelector('.setup-fireball-wrap');
 
   var onSettingsWindowEscPress = function (evt) {
@@ -66,6 +68,7 @@
 
       element.setAttribute('style', 'fill:' + currentColor);
       input.setAttribute('value', currentColor);
+      window.setup[input.name.substr(0, 4) + 'Color'] = currentColor;
     };
   };
 
@@ -86,6 +89,10 @@
   addCharacterCallback();
 
   window.setup = {
-    dialog: dialog
+    dialog: dialog,
+    myCharacterCoat: myCharacterCoat,
+    coatColor: startCoatColor,
+    myCharacterEyes: myCharacterEyes,
+    eyesColor: startEyesColor
   };
 })();

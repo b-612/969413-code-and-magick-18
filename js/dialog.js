@@ -9,7 +9,6 @@
 
   var onMouseUp = function (moveResult) {
     return function (upEvt) {
-      // debugger;
       upEvt.preventDefault();
 
       document.removeEventListener('mousemove', moveResult);

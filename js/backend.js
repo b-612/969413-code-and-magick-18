@@ -89,6 +89,8 @@
     xhr.addEventListener('load', function () {
       if (xhr.status === STATUS_OK) {
         onLoad(xhr);
+        var similarWizads = xhr.response;
+        window.backend.characters = similarWizads.slice();
       } else {
         onError(getErrorMessage(xhr).message);
       }
@@ -113,6 +115,7 @@
 
     getAdditionalErrors(xhr);
     setXhrParams(xhr, url, method, timeout, data);
+
   };
 
   window.backend = {
