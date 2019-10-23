@@ -90,22 +90,23 @@
     return characterElement;
   };
 
-  var renderFragment = function (allCharacters) {
+  var renderSimilarCharacters = function (allCharacters) {
     for (var i = 0; i < HOW_MANY_CHARACTERS; i++) {
       var character = makeCharacter(allCharacters);
       fragment.appendChild(renderCharacter(character, i));
     }
-
+    similarList.textContent = '';
     similarList.appendChild(fragment);
   };
 
   var addSimilarCharacters = function (characters) {
-    renderFragment(characters);
+    renderSimilarCharacters(characters);
     similarCharacters.classList.remove('hidden');
   };
 
   window.charactersParams = {
     mockParams: СharactersParams,
+    renderSimilarCharacters: renderSimilarCharacters,
     addSimilarCharacters: addSimilarCharacters
   };
 })();
