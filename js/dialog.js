@@ -7,20 +7,6 @@
     dialog.removeEventListener('click', onClickPreventDefault);
   };
 
-  var onMouseUp = function (moveResult) {
-    return function (upEvt) {
-      upEvt.preventDefault();
-
-      document.removeEventListener('mousemove', moveResult);
-      document.removeEventListener('mouseup', onMouseUp);
-
-      if (moveResult) {
-        dialog.addEventListener('click', onClickPreventDefault);
-      }
-
-    };
-  };
-
   var onMouseDown = function (evt) {
     evt.preventDefault();
 
@@ -48,12 +34,21 @@
       window.setup.dialog.setAttribute('style', 'top: '
         + (window.setup.dialog.offsetTop - shift.y) + 'px; ' +
         'left: ' + (window.setup.dialog.offsetLeft - shift.x) + 'px');
+    };
 
-      return dragged;
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      if (dragged) {
+        dialog.addEventListener('click', onClickPreventDefault);
+      }
     };
 
     document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp(onMouseMove));
+    document.addEventListener('mouseup', onMouseUp);
   };
 
   dialog.addEventListener('mousedown', onMouseDown);
